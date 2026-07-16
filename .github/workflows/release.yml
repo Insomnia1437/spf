@@ -1,0 +1,82 @@
+name: Release Build
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - 'v*'
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    name: Build and Package
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Restore NuGet Packages
+      run: dotnet restore SPF.sln
+
+    - name: Build Solution
+      run: dotnet build SPF.sln --configuration Release --no-restore
+
+    - name: Publish Framework-Dependent Portable Executable (Lightweight ~9MB)
+      run: |
+        dotnet publish SPF/SPF.csproj `
+          --configuration Release `
+          --runtime win-x64 `
+          --self-contained false `
+          -p:PublishSingleFile=true `
+          --output ./publish/framework_dependent
+
+    - name: Publish Self-Contained Portable Executable (Standalone ~150MB)
+      run: |
+        dotnet publish SPF/SPF.csproj `
+          --configuration Release `
+          --runtime win-x64 `
+          --self-contained true `
+          -p:PublishSingleFile=true `
+          -p:PublishReadyToRun=false `
+          -p:PublishTrimmed=false `
+          --output ./publish/self_contained
+
+    - name: Rename Executables
+      run: |
+        mv ./publish/framework_dependent/SPF.exe ./publish/spf.exe
+        mv ./publish/self_contained/SPF.exe ./publish/spf-standalone.exe
+
+    - name: Upload Framework-Dependent Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: spf-portable-windows
+        path: ./publish/spf.exe
+
+    - name: Upload Standalone Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: spf-standalone-windows
+        path: ./publish/spf-standalone.exe
+
+    - name: Create Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v2
+      with:
+        files: |
+          ./publish/spf.exe
+          ./publish/spf-standalone.exe
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
