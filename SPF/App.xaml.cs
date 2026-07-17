@@ -11,7 +11,7 @@ namespace SPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            
+
             // Forces the ModernWpf framework to load Light Theme controls
             ThemeManager.Current.ApplicationTheme = ApplicationTheme.Light;
         }

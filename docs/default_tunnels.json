@@ -1,0 +1,34 @@
+[
+  {
+    "Id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+    "Name": "Sample Local Tunnel",
+    "Type": 0,
+    "LocalBindAddress": "127.0.0.1",
+    "LocalPort": 8080,
+    "RemoteHost": "192.168.1.50",
+    "RemotePort": 80,
+    "SshHost": "ssh-gateway.example.com",
+    "SshPort": 22,
+    "SshUser": "ubuntu",
+    "AuthMethod": 0,
+    "SshKeyPath": "",
+    "SshKeyPassphrase": "",
+    "AutoReconnect": true
+  },
+  {
+    "Id": "f6e5d4c3-b2a1-0f9e-8d7c-6b5a4f3e2d1c",
+    "Name": "Sample SOCKS5 Proxy",
+    "Type": 2,
+    "LocalBindAddress": "0.0.0.0",
+    "LocalPort": 1080,
+    "RemoteHost": "",
+    "RemotePort": 0,
+    "SshHost": "ssh-gateway.example.com",
+    "SshPort": 22,
+    "SshUser": "ubuntu",
+    "AuthMethod": 1,
+    "SshKeyPath": "C:\\Users\\example\\.ssh\\id_rsa",
+    "SshKeyPassphrase": "",
+    "AutoReconnect": true
+  }
+]

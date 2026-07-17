@@ -20,9 +20,9 @@ namespace SPF.Services
         {
             // Set base directories
             AppDirectoryConfigPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ConfigFileName);
-            
+
             string appDataFolder = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), 
+                Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "SimplePortForwarder"
             );
             AppDataConfigPath = Path.Combine(appDataFolder, ConfigFileName);
@@ -77,7 +77,7 @@ namespace SPF.Services
             try
             {
                 string json = JsonSerializer.Serialize(tunnels, new JsonSerializerOptions { WriteIndented = true });
-                
+
                 // Ensure parent directory exists (needed if AppData path is used and directory was deleted)
                 string? directory = Path.GetDirectoryName(ActiveConfigPath);
                 if (directory != null && !Directory.Exists(directory))

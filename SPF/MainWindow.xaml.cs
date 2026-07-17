@@ -25,7 +25,7 @@ namespace SPF
         public MainWindow()
         {
             InitializeComponent();
-            
+
             // 1. Initialize core services
             _tunnelService = new TunnelService();
             _tunnelService.StatusChanged += TunnelService_StatusChanged;
@@ -36,7 +36,7 @@ namespace SPF
 
             // 3. Load configurations
             LoadConfiguration();
-            
+
             // Log startup
             AppendLog("System", "SimplePortForwarder (SPF) initialized.");
             AppendLog("System", $"Active configuration file: {ConfigManager.GetActiveConfigPath()}");
@@ -187,7 +187,8 @@ namespace SPF
             var dialog = new SaveFileDialog
             {
                 Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*",
-                FileName = $"{DateTime.Now:yyyyMMdd}_spf_backup.json"
+                FileName = $"{DateTime.Now:yyyyMMdd}_spf_backup.json",
+                InitialDirectory = AppDomain.CurrentDomain.BaseDirectory
             };
 
             if (dialog.ShowDialog() == true)
@@ -211,7 +212,8 @@ namespace SPF
         {
             var dialog = new OpenFileDialog
             {
-                Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*"
+                Filter = "JSON Files (*.json)|*.json|All Files (*.*)|*.*",
+                InitialDirectory = AppDomain.CurrentDomain.BaseDirectory
             };
 
             if (dialog.ShowDialog() == true)
@@ -219,11 +221,11 @@ namespace SPF
                 try
                 {
                     var imported = ConfigManager.ImportConfig(dialog.FileName);
-                    
+
                     var result = MessageBox.Show(
                         "Would you like to overwrite your current configuration?\n\n- Click YES to overwrite.\n- Click NO to append imported tunnels to your existing list.",
-                        "Import Tunnels", 
-                        MessageBoxButton.YesNoCancel, 
+                        "Import Tunnels",
+                        MessageBoxButton.YesNoCancel,
                         MessageBoxImage.Question
                     );
 
@@ -246,7 +248,7 @@ namespace SPF
                         {
                             config.Id = Guid.NewGuid().ToString();
                         }
-                        
+
                         _tunnelsList.Add(new TunnelRow { Config = config, Status = TunnelStatus.Stopped });
                     }
 
@@ -330,7 +332,7 @@ namespace SPF
                     // Create a deep copy of config to edit, avoiding modifying active grid until saved
                     var json = System.Text.Json.JsonSerializer.Serialize(row.Config);
                     var configCopy = System.Text.Json.JsonSerializer.Deserialize<TunnelConfig>(json);
-                    
+
                     if (configCopy == null) return;
 
                     var editWindow = new TunnelEditWindow(configCopy)
@@ -364,7 +366,7 @@ namespace SPF
                     // Create a deep copy of config to copy
                     var json = System.Text.Json.JsonSerializer.Serialize(row.Config);
                     var configCopy = System.Text.Json.JsonSerializer.Deserialize<TunnelConfig>(json);
-                    
+
                     if (configCopy == null) return;
 
                     // Assign new ID and suffix name
@@ -394,9 +396,9 @@ namespace SPF
             if (sender is Button btn && btn.DataContext is TunnelRow row && row.IsEditable)
             {
                 var result = MessageBox.Show(
-                    $"Are you sure you want to delete tunnel '{row.Name}'?", 
-                    "Confirm Delete", 
-                    MessageBoxButton.YesNo, 
+                    $"Are you sure you want to delete tunnel '{row.Name}'?",
+                    "Confirm Delete",
+                    MessageBoxButton.YesNo,
                     MessageBoxImage.Warning
                 );
 
@@ -413,7 +415,7 @@ namespace SPF
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-            
+
             // Clean up and stop all active SSH listeners/connections on close
             _tunnelService.Dispose();
         }
@@ -444,7 +446,7 @@ namespace SPF
     public class TunnelRow : INotifyPropertyChanged
     {
         private TunnelStatus _status = TunnelStatus.Stopped;
-        
+
         public TunnelConfig Config { get; set; } = new();
 
         public string Id => Config.Id;
@@ -455,12 +457,12 @@ namespace SPF
             TunnelType.Remote => "Remote",
             _ => "Dynamic"
         };
-        
+
         public string LocalDisplay => $"{Config.LocalBindAddress}:{Config.LocalPort}";
         public string SshDisplay => $"{Config.SshUser}@{Config.SshHost}:{Config.SshPort}";
-        
-        public string DestinationDisplay => Config.Type == TunnelType.Dynamic 
-            ? "(SOCKS5 Proxy)" 
+
+        public string DestinationDisplay => Config.Type == TunnelType.Dynamic
+            ? "(SOCKS5 Proxy)"
             : $"{Config.RemoteHost}:{Config.RemotePort}";
 
         public TunnelStatus Status
@@ -534,11 +536,11 @@ namespace SPF
 
         public bool IsRunningOrConnecting => _status == TunnelStatus.Running || _status == TunnelStatus.Connecting || _status == TunnelStatus.Reconnecting;
         public bool IsEditable => !IsRunningOrConnecting;
-        
+
         public string StartButtonText => IsRunningOrConnecting ? "Stop" : "Start";
         public string StartButtonSymbol => IsRunningOrConnecting ? "■" : "▶";
-        
-        public Brush ActionButtonBg => IsRunningOrConnecting 
+
+        public Brush ActionButtonBg => IsRunningOrConnecting
             ? new SolidColorBrush(Color.FromRgb(239, 68, 68)) // solid red
             : new SolidColorBrush(Color.FromRgb(16, 185, 129)); // solid green
 

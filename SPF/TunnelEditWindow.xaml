@@ -2,13 +2,13 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:ui="http://schemas.modernwpf.com/2019"
-        Title="Configure Port Forwarding Tunnel" 
+        Title="Configure Port Forwarding Tunnel"
         Height="660" Width="1000"
         WindowStartupLocation="CenterOwner"
         ResizeMode="NoResize"
         Icon="spf_logo.png"
         Background="#F8FAFC"> <!-- Slate Light Page background -->
-    
+
     <Window.Resources>
         <!-- Modern SaaS Form Styles -->
         <Style x:Key="ModernTextBoxStyle" TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
@@ -78,11 +78,11 @@
                 <TextBlock Text="Forwarding Type" FontSize="11" FontWeight="Bold" Foreground="#64748B" Margin="0,0,0,6"/>
                 <Border Background="#F1F5F9" CornerRadius="6" Padding="6" BorderBrush="#E2E8F0" BorderThickness="1">
                     <ui:SimpleStackPanel Orientation="Horizontal" Spacing="15">
-                        <RadioButton x:Name="LocalRadio" Content="Local (-L)" IsChecked="True" Checked="TunnelType_Checked" 
+                        <RadioButton x:Name="LocalRadio" Content="Local (-L)" IsChecked="True" Checked="TunnelType_Checked"
                                      Padding="4,0" FontSize="11" FontWeight="SemiBold"/>
-                        <RadioButton x:Name="RemoteRadio" Content="Remote (-R)" Checked="TunnelType_Checked" 
+                        <RadioButton x:Name="RemoteRadio" Content="Remote (-R)" Checked="TunnelType_Checked"
                                      Padding="4,0" FontSize="11" FontWeight="SemiBold"/>
-                        <RadioButton x:Name="DynamicRadio" Content="Dynamic (-D)" Checked="TunnelType_Checked" 
+                        <RadioButton x:Name="DynamicRadio" Content="Dynamic (-D)" Checked="TunnelType_Checked"
                                      Padding="4,0" FontSize="11" FontWeight="SemiBold"/>
                     </ui:SimpleStackPanel>
                 </Border>
@@ -117,7 +117,7 @@
                         <TextBlock Text="💻" FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock x:Name="LocalCardTitle" Text="Local PC" FontSize="13" FontWeight="Bold" Foreground="#0F172A" VerticalAlignment="Center"/>
                     </ui:SimpleStackPanel>
-                    
+
                     <Separator Background="#F1F5F9" Margin="0,0,0,5"/>
 
                     <ui:SimpleStackPanel Spacing="6">
@@ -145,7 +145,7 @@
                             <TextBlock Text="🔒" FontSize="18" VerticalAlignment="Center"/>
                             <TextBlock Text="SSH Gateway Server" FontSize="13" FontWeight="Bold" Foreground="#4F46E5" VerticalAlignment="Center"/>
                         </ui:SimpleStackPanel>
-                        
+
                         <Separator Background="#F1F5F9" Margin="0,0,0,5"/>
 
                         <Grid>
@@ -215,7 +215,7 @@
                         <TextBlock Text="🌐" FontSize="18" VerticalAlignment="Center"/>
                         <TextBlock x:Name="RemoteCardTitle" Text="Remote Server" FontSize="13" FontWeight="Bold" Foreground="#047857" VerticalAlignment="Center"/>
                     </ui:SimpleStackPanel>
-                    
+
                     <Separator Background="#F1F5F9" Margin="0,0,0,5"/>
 
                     <ui:SimpleStackPanel Spacing="6">

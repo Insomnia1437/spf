@@ -24,7 +24,7 @@ namespace SPF
         public TunnelEditWindow(TunnelConfig? config = null)
         {
             InitializeComponent();
-            
+
             // Assign config or create a new one
             Config = config ?? new TunnelConfig();
 
@@ -62,34 +62,34 @@ namespace SPF
             if (NameInput == null) return;
 
             NameInput.Text = Config.Name;
-            
+
             if (AutoReconnectCheck != null)
                 AutoReconnectCheck.IsChecked = Config.AutoReconnect;
-                
+
             if (LocalIpCombo != null)
                 LocalIpCombo.Text = Config.LocalBindAddress;
-                
+
             if (LocalPortInput != null)
                 LocalPortInput.Text = Config.LocalPort > 0 ? Config.LocalPort.ToString() : "";
-            
+
             if (RemoteHostInput != null)
                 RemoteHostInput.Text = Config.RemoteHost;
-                
+
             if (RemotePortInput != null)
                 RemotePortInput.Text = Config.RemotePort > 0 ? Config.RemotePort.ToString() : "";
 
             if (SshHostCombo != null)
                 SshHostCombo.Text = Config.SshHost;
-                
+
             if (SshPortInput != null)
                 SshPortInput.Text = Config.SshPort.ToString();
-                
+
             if (SshUserInput != null)
                 SshUserInput.Text = Config.SshUser;
-                
+
             if (AuthMethodCombo != null)
                 AuthMethodCombo.SelectedItem = Config.AuthMethod;
-            
+
             if (Config.AuthMethod == SshAuthMethod.PrivateKey)
             {
                 if (SshKeyPathInput != null)
@@ -149,10 +149,10 @@ namespace SPF
                 case TunnelType.Local:
                     LocalCardTitle.Text = "Local Listener (PC)";
                     RemoteCardTitle.Text = "Remote Destination";
-                    
+
                     ArrowLocalToSsh.Text = "➔";
                     ArrowSshToRemote.Text = "➔";
-                    
+
                     ArrowSshToRemoteGrid.Visibility = Visibility.Visible;
                     RemoteCardBorder.Visibility = Visibility.Visible;
                     RemoteCardColumn.Width = new GridLength(1, GridUnitType.Star);
@@ -161,10 +161,10 @@ namespace SPF
                 case TunnelType.Remote:
                     LocalCardTitle.Text = "Local Destination";
                     RemoteCardTitle.Text = "Remote Listener (Server)";
-                    
+
                     ArrowLocalToSsh.Text = "←";
                     ArrowSshToRemote.Text = "←";
-                    
+
                     ArrowSshToRemoteGrid.Visibility = Visibility.Visible;
                     RemoteCardBorder.Visibility = Visibility.Visible;
                     RemoteCardColumn.Width = new GridLength(1, GridUnitType.Star);
@@ -172,9 +172,9 @@ namespace SPF
 
                 case TunnelType.Dynamic:
                     LocalCardTitle.Text = "SOCKS Proxy Listener";
-                    
+
                     ArrowLocalToSsh.Text = "➔";
-                    
+
                     ArrowSshToRemoteGrid.Visibility = Visibility.Collapsed;
                     RemoteCardBorder.Visibility = Visibility.Collapsed;
                     RemoteCardColumn.Width = new GridLength(0); // Hide remote column
@@ -199,7 +199,7 @@ namespace SPF
         private void TunnelType_Checked(object sender, RoutedEventArgs e)
         {
             if (_isLoading) return;
-            
+
             ClearInputs();
             UpdateUiState();
         }
@@ -324,7 +324,7 @@ namespace SPF
             Config.SshPort = sshPort;
             Config.SshUser = SshUserInput.Text.Trim();
             Config.AuthMethod = auth;
-            
+
             if (AutoReconnectCheck != null)
             {
                 Config.AutoReconnect = AutoReconnectCheck.IsChecked ?? true;

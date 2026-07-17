@@ -12,9 +12,9 @@ namespace SPF
         public PasswordPromptWindow(string sshUser, string sshHost, int sshPort)
         {
             InitializeComponent();
-            
+
             ServerDetailsLabel.Text = $"Connecting to {sshUser}@{sshHost}:{sshPort}";
-            
+
             Loaded += (s, e) =>
             {
                 PasswordInput.Focus();

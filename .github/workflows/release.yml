@@ -2,15 +2,13 @@ name: Release Build
 
 on:
   push:
-    branches:
-      - main
-      - master
     tags:
       - 'v*'
   pull_request:
     branches:
       - main
       - master
+  workflow_dispatch:
 
 jobs:
   build:
@@ -54,30 +52,42 @@ jobs:
           -p:PublishTrimmed=false `
           --output ./publish/self_contained
 
-    - name: Rename Executables
+    - name: Prepare Zip Contents
       run: |
-        mv ./publish/framework_dependent/SPF.exe ./publish/spf.exe
-        mv ./publish/self_contained/SPF.exe ./publish/spf-standalone.exe
+        mkdir ./publish/portable_zip
+        cp ./publish/framework_dependent/SPF.exe ./publish/portable_zip/SPF.exe
+        cp ./docs/default_tunnels.json ./publish/portable_zip/default_tunnels.json
+        cp ./docs/readme.txt ./publish/portable_zip/readme.txt
+
+        mkdir ./publish/standalone_zip
+        cp ./publish/self_contained/SPF.exe ./publish/standalone_zip/SPF.exe
+        cp ./docs/default_tunnels.json ./publish/standalone_zip/default_tunnels.json
+        cp ./docs/readme.txt ./publish/standalone_zip/readme.txt
+
+    - name: Compress Releases into Zip Archives
+      run: |
+        Compress-Archive -Path ./publish/portable_zip/* -DestinationPath ./publish/spf-portable-windows.zip
+        Compress-Archive -Path ./publish/standalone_zip/* -DestinationPath ./publish/spf-standalone-windows.zip
 
     - name: Upload Framework-Dependent Artifact
       uses: actions/upload-artifact@v7
       with:
         name: spf-portable-windows
-        path: ./publish/spf.exe
+        path: ./publish/spf-portable-windows.zip
 
     - name: Upload Standalone Artifact
       uses: actions/upload-artifact@v7
       with:
         name: spf-standalone-windows
-        path: ./publish/spf-standalone.exe
+        path: ./publish/spf-standalone-windows.zip
 
     - name: Create Release
       if: startsWith(github.ref, 'refs/tags/v')
       uses: softprops/action-gh-release@v2
       with:
         files: |
-          ./publish/spf.exe
-          ./publish/spf-standalone.exe
+          ./publish/spf-portable-windows.zip
+          ./publish/spf-standalone-windows.zip
         draft: false
         prerelease: false
       env:

@@ -44,7 +44,7 @@ namespace SPF.Services
                 foreach (string line in lines)
                 {
                     string trimmed = line.Trim();
-                    
+
                     // Skip comments and empty lines
                     if (string.IsNullOrEmpty(trimmed) || trimmed.StartsWith("#"))
                     {

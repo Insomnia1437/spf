@@ -145,7 +145,7 @@ namespace SPF.Services
             {
                 var ipProperties = IPGlobalProperties.GetIPGlobalProperties();
                 var tcpListeners = ipProperties.GetActiveTcpListeners();
-                
+
                 if (!IPAddress.TryParse(ipAddress, out var targetIp))
                 {
                     details = $"Invalid IP address format: {ipAddress}";
@@ -157,7 +157,7 @@ namespace SPF.Services
                     if (listener.Port == port)
                     {
                         // Match all adapters (0.0.0.0 / [::]) or matching specific IP
-                        if (targetIp.Equals(IPAddress.Any) || 
+                        if (targetIp.Equals(IPAddress.Any) ||
                             listener.Address.Equals(IPAddress.Any) ||
                             targetIp.Equals(listener.Address) ||
                             (targetIp.AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6 && targetIp.Equals(IPAddress.IPv6Any)) ||
@@ -240,7 +240,7 @@ namespace SPF.Services
 
                 ConnectionInfo connectionInfo = CreateConnectionInfo(config);
                 client = new SshClient(connectionInfo);
-                
+
                 // Set timeouts to prevent infinite blocking
                 client.ConnectionInfo.Timeout = TimeSpan.FromSeconds(15);
                 client.KeepAliveInterval = TimeSpan.FromSeconds(30);
@@ -253,7 +253,7 @@ namespace SPF.Services
                 };
 
                 Log(tunnelId, tunnelName, $"Connecting to SSH server {config.SshHost}:{config.SshPort}...");
-                
+
                 // Run connection in Task to avoid blocking
                 await Task.Run(() => client.Connect(), token);
 
@@ -278,9 +278,9 @@ namespace SPF.Services
                 {
                     var portLocal = new ForwardedPortLocal(config.LocalBindAddress, (uint)config.LocalPort, config.RemoteHost, (uint)config.RemotePort);
                     client.AddForwardedPort(portLocal);
-                    
+
                     portLocal.Exception += (s, e) => Log(tunnelId, tunnelName, $"Local Forwarding Port Error: {e.Exception.Message}", isError: true);
-                    
+
                     Log(tunnelId, tunnelName, $"Starting local port forwarding: {config.LocalBindAddress}:{config.LocalPort} -> {config.RemoteHost}:{config.RemotePort}");
                     portLocal.Start();
                     activePorts.Add(portLocal);
@@ -295,7 +295,7 @@ namespace SPF.Services
                     portRemote.Exception += (s, e) => Log(tunnelId, tunnelName, $"Remote Forwarding Port Error: {e.Exception.Message}", isError: true);
 
                     Log(tunnelId, tunnelName, $"Starting remote port forwarding: [SSH Server]:{config.RemotePort} -> {config.LocalBindAddress}:{config.LocalPort}");
-                    
+
                     // Run on thread pool because RemotePort.Start can block or throw if server GatewayPorts configuration denies it
                     await Task.Run(() => portRemote.Start(), token);
                     activePorts.Add(portRemote);
@@ -427,7 +427,7 @@ namespace SPF.Services
                 try
                 {
                     await ConnectAndSetupTunnelAsync(config, token);
-                    
+
                     // If connection succeeded, ConnectAndSetupTunnelAsync updates status to Running and loop ends
                     if (GetStatus(config.Id) == TunnelStatus.Running)
                     {
