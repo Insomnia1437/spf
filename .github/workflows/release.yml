@@ -16,13 +16,15 @@ jobs:
   build:
     name: Build and Package
     runs-on: windows-latest
+    permissions:
+      contents: write
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
 
     - name: Setup .NET SDK
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v6
       with:
         dotnet-version: '8.0.x'
 
@@ -58,13 +60,13 @@ jobs:
         mv ./publish/self_contained/SPF.exe ./publish/spf-standalone.exe
 
     - name: Upload Framework-Dependent Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: spf-portable-windows
         path: ./publish/spf.exe
 
     - name: Upload Standalone Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: spf-standalone-windows
         path: ./publish/spf-standalone.exe
