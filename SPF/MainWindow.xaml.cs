@@ -427,11 +427,14 @@ namespace SPF
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
+            var version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version?.ToString(3) ?? "1.0.0";
             MessageBox.Show(
                 "Simple Port Forwarder (SPF)\n" +
-                "Version: 1.0.0\n\n" +
+                "Author: DW\n" +
+                "Source: https://github.com/Insomnia1437/spf\n" +
+                $"Version: {version}\n\n" +
                 "A lightweight, portable Windows utility to manage and run SSH tunnels (Local, Remote, and Dynamic).\n" +
-                "Configurations are stored locally in config.json.\n\n" +
+                "Configurations are stored locally in tunnels.json.\n\n" +
                 "Designed for secure, reliable tunneling.",
                 "About SPF",
                 MessageBoxButton.OK,

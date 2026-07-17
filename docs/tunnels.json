@@ -1,7 +1,7 @@
 [
   {
     "Id": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
-    "Name": "Sample Local Tunnel",
+    "Name": "Sample1",
     "Type": 0,
     "LocalBindAddress": "127.0.0.1",
     "LocalPort": 8080,
@@ -17,7 +17,7 @@
   },
   {
     "Id": "f6e5d4c3-b2a1-0f9e-8d7c-6b5a4f3e2d1c",
-    "Name": "Sample SOCKS5 Proxy",
+    "Name": "Sample2",
     "Type": 2,
     "LocalBindAddress": "0.0.0.0",
     "LocalPort": 1080,
